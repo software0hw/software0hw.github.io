@@ -5,12 +5,11 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <html>
-    <script type="text/javascript" src="../JS/nav.js"></script>
 <title>計分頁面</title>
   <style>
    .container {  display: grid;
   grid-template-columns: 0.8fr 0.8fr 0.8fr 0.8fr;
-  grid-template-rows: 0.4fr 1fr 0.40fr 0.8fr 1.1fr 1.5fr 0fr;
+  grid-template-rows: 0.4fr 1fr 0.40fr 0.8fr 1.1fr 3fr 1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -33,14 +32,14 @@
 	}
 	.選擇隊伍{
 		grid-area: 選擇隊伍;
-		font-size: 30px;
+		font-size: 20px;
 		text-align: center;
 		
 	}
 	
 	.選擇場次{
 		grid-area: 選擇場次;
-		font-size: 30px;
+		font-size: 20px;
 		text-align: center;
 	}
 	
@@ -55,13 +54,13 @@
 	.選手A { 
 		grid-area: 選手A; 
 		text-align: center;
-		font-size: 35px;
+		font-size: 25px;
 	}
 
 	.選手B { 
 		grid-area: 選手B;
 		text-align: center;
-		font-size: 30px;
+		font-size: 25px;
 	}
 
 	.犯規按鈕A { 
@@ -73,14 +72,13 @@
 	.選手A犯規 { 
 		grid-area: 選手A犯規;
 		text-align: center;
-		font-size: 30px;
+		font-size: 25px;
 	}
 
 	.選手B犯規 { 
 		grid-area: 選手B犯規;
 		text-align: center;
-		font-size: 30px;
-        margin-left: 80px;
+		font-size: 25px;
 	}
 
 	.犯規按鈕B { 
@@ -96,14 +94,13 @@
 	.選手A分數 { 
 		grid-area: 選手A分數;
 		text-align: center;		
-		font-size: 30px;
+		font-size: 25px;
 	}
 
 	.選手B分數 { 
 		grid-area: 選手B分數;
 		text-align: center;		
-		font-size: 30px;
-        margin-left: 80px;
+		font-size: 25px;
 	}
 
 	.計分按鈕B { 
@@ -119,19 +116,19 @@
 		text-align: center;		
 	}
   </style>
-  <body style="height: 100vh; background-image: linear-gradient(45deg, #93a5cf 0%, #e4efe9 100%);">
+  <body>
     <div class="container">
-		<h1 class="計分板">計分板</h1>
+		<div class="計分板">計分板</div>
 		
-		<div class="選擇隊伍">請選擇目前比賽隊伍   <select id="team_selct" onchange="team_selected()" style="font-size: 25px;"> </select></div>
+		<div class="選擇隊伍">請選擇目前比賽隊伍<select id="team_selct" onchange="team_selected()"> </select></div>
 		
-		<div class="選擇場次">請選擇目前比賽場次   <select id="session_selct" onchange="session_selected()" style="font-size: 25px;"> </select></div>
+		<div class="選擇場次">請選擇目前比賽場次<select id="session_selct" onchange="session_selected()"> </select></div>
 		
 		<div class="比賽時間">
 			<div class="input-group mb-3">
 				<input id="countdown" type="text" class="form-control" placeholder="請輸入比賽時間(ex:120)" aria-label="counterdown" aria-describedby="button-addon2">
-				<button class="btn btn-outline-secondary" type="button" onclick="start()" style="padding-left: 10px;">開始倒數</button>
-				<button class="btn btn-outline-secondary" type="button" onclick="pause()" style="padding-left: 10px;">暫停倒數</button>
+				<button class="btn btn-outline-secondary" type="button" onclick="start()">開始倒數</button>
+				<button class="btn btn-outline-secondary" type="button" onclick="pause()">暫停倒數</button>
 			</div>
 			<div id="timer">	</div>
 		</div>
@@ -141,7 +138,7 @@
 		<div class="選手B" id ="player2">test2</div>
 		
 		<div class="犯規按鈕A" >
-			<button class="btn btn-danger"onclick="foul_add(1)" id="foul_add_button_A">test1 犯規1次</button>
+			<button class="btn btn-danger"onclick="foul_add(1)" id="foul_add_button_A">test1 犯規1次</button><br>
 			<button class="btn btn-secondary" onclick="foul_reduce(1)" id="foul_reduce_button_A">test1 犯規-1</button>
 
 		</div>
@@ -166,14 +163,14 @@
 		
 		<div class="犯規按鈕B">
 			<div class="button-container">
-				<button class="btn btn-danger"onclick="foul_add(2)" id="foul_add_button_B">test2 犯規1次</button>
-				<button class="btn btn-secondary" onclick="foul_reduce(2)" id="foul_reduce_button_B">test2 犯規-1</button>
-				<button class="btn btn-warning" style="margin-top: 10px;" onclick="foul_reset()">犯規歸零</button>
+				<button class="btn btn-danger"onclick="foul_add(2)" id="foul_add_button_B">test2 犯規1次</button><br>
+				<button class="btn btn-secondary" onclick="foul_reduce(2)" id="foul_reduce_button_B">test2 犯規-1</button><br>
+				<button class="btn btn-warning" onclick="foul_reset()">犯規歸零</button>
 			</div>
 		</div>
 		<div class="計分按鈕A">
 			<div class="button-container">
-				<button class="btn btn-success" onclick="point_add(1)" id="point_add_button_A">test1 得分</button>
+				<button class="btn btn-success" onclick="point_add(1)" id="point_add_button_A">test1 得分</button><br>
 				<button class="btn btn-secondary" onclick="point_reduce(1)" id="point_reduce_button_A">test1 扣分</button>
 			</div>
 		</div>
@@ -197,20 +194,18 @@
 		</div>
 		<div class="計分按鈕B">
 			<div class="button-container">
-				<button class="btn btn-success" onclick="point_add(2)" id="point_add_button_B">test2 得分</button>
+				<button class="btn btn-success" onclick="point_add(2)" id="point_add_button_B">test2 得分</button><br>
 				<button class="btn btn-secondary" onclick="point_reduce(2)"id="point_reduce_button_B">test2 扣分</button><br>
-				<button class="btn btn-warning" style="margin-top: 10px;" onclick="point_reset()">分數歸零</button>
+				<button class="btn btn-warning" onclick="point_reset()">分數歸零</button>
 			</div>
 			
 		</div>
 		<div class="比賽結束">
 			<button class="btn btn-primary"onclick="storedata()">比賽結束</button>
 		</div>
-<!--
 		<div class="get">
 			<button onclick="getdata_point()"> get(可以拿掉)</button>
 		</div>
--->
 		
 		
 	</div>
@@ -292,6 +287,12 @@
 			measurementId: "G-WNGLH5K466"
 		  };
 		  firebase.initializeApp(config);
+		  function storedata_winner(team_name,sheet_data,mb_data) {
+    db.collection("binary_tree").doc(team_name).set({
+    sheet_data:sheet_data,
+    mb_data:mb_data
+    });
+}
 		function storedata() {
 			var winner;
 			var p1 = document.getElementById("player1").innerHTML;
@@ -304,6 +305,7 @@
 			
 			var session_data = document.getElementById("session_selct").value;//取得場次資料
 			
+			var team_data = document.getElementById("team_selct").value;
 			
 			if(get_score1 > get_score2){
 				winner = p1;
@@ -311,6 +313,10 @@
 			else{
 				winner = p2;
 			}
+			var session_selct_Index = session_selct.selectedIndex;
+			var team_selct_Index = team_selct.selectedIndex;
+			tree_value[team_selct_Index]['mb'][session_selct_Index]=winner;
+			storedata_winner(team_data,tree_value[team_selct_Index]['mb'],tree_value[team_selct_Index]['sheet']);
 			
 			db.collection("計分").doc(p1+ " vs " +p2).set({
 				session: session_data,
@@ -322,6 +328,7 @@
 			});
 			
 		}
+		
 		
 		
 		function getdata_point() {
@@ -372,10 +379,10 @@
 			get_all_session();
 			
 		}
-		
+		var tree_value;
 		async function session_selected(){
 			var team_arr=await get_team();
-			var tree_value=new Array(team_arr.length);
+			 tree_value=new Array(team_arr.length);
 			console.log("team_arr",team_arr);
 			for(let i=0;i<tree_value.length;i++){
 				tree_value[i]= await get_treedata("binary_tree",team_arr[i]);
