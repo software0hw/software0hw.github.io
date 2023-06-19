@@ -1,11 +1,11 @@
-function binary_tree (mb_arr,team_name){
+function binary_tree (mb_arr,team_name,index){
     let len=mb_arr.length;
     var layer=Math.ceil(Math.log2(2*len));
     let sheet=new Array(Math.pow(2,layer)).fill(0);
     let mb=new Array(Math.pow(2,layer)).fill(0);
     set_mb(mb,len,1);
     set_name(mb,mb_arr,layer);
-    set_sheet(sheet,mb,layer);
+    set_sheet(sheet,mb,layer,index);
     storedata(team_name,sheet,mb);
     return{
         "sheet":sheet,
@@ -28,8 +28,8 @@ function set_name(mb_arr,mb_name,layer){
         if(mb_arr[i]==1){mb_arr[i]=mb_name[j];j++;}
     }
 }
-function set_sheet(sheet_arr,mb_arr,layer){
-    let nb=101;
+function set_sheet(sheet_arr,mb_arr,layer,index){
+    let nb=(index+1)*100+1;
     let start=Math.pow(2,layer-1)-1;
     for(let i=start;i>=1;i--){
         if(mb_arr[i]>1){
